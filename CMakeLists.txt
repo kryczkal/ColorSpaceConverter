@@ -69,3 +69,16 @@ install(TARGETS ImageProfileConverter
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(ImageProfileConverter)
 endif()
+
+set(IMAGES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/Images)
+if(EXISTS ${IMAGES_FOLDER})
+    add_custom_command(
+            TARGET ImageProfileConverter POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${IMAGES_FOLDER}
+            $<TARGET_FILE_DIR:ImageProfileConverter>/Images
+            COMMENT "Copying Images folder to output directory"
+    )
+else()
+    message(WARNING "Images folder not found at ${IMAGES_FOLDER}")
+endif()
